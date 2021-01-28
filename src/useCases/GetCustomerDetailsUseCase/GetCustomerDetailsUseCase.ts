@@ -17,9 +17,15 @@ export default class GetCustomerUseCase {
 
     const customerResponse = await api(company).get(`cliente/list/${login}`);
     const invoiceResponse = await api(company).get(`invoice/list/${login}`);
+
+    const invoices =
+      invoiceResponse.data.toLocaleLowerCase() === 'null'
+        ? null
+        : invoiceResponse.data;
+
     const customer = {
       customer: customerResponse.data.dados,
-      invoices: invoiceResponse.data,
+      invoices,
     };
     return customer;
   }
