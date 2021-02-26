@@ -12,7 +12,7 @@ export default class ListCustomersController {
       });
       return response.json(customers);
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
       return response.status(500).json({
         message: err.message || 'Internal server error',
       });

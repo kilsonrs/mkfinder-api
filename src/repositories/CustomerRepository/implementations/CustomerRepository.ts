@@ -14,21 +14,25 @@ export default class CustomerRepository implements ICustomerRepository {
     const { login, nome, mac } = data.query;
 
     if (login) {
-      return this.customers.filter(client =>
-        parseString(client.login).includes(parseString(login)),
-      );
+      return this.customers
+        .filter(client =>
+          parseString(client.login).includes(parseString(login)),
+        )
+        .filter((_, index) => index < 10);
     }
 
     if (nome) {
-      return this.customers.filter(client =>
-        parseString(client.nome).includes(parseString(nome)),
-      );
+      return this.customers
+        .filter(client => parseString(client.nome).includes(parseString(nome)))
+        .filter((_, index) => index < 10);
     }
 
     if (mac) {
-      return this.customers.filter(
-        client => client.mac && parseMac(client.mac).includes(parseMac(mac)),
-      );
+      return this.customers
+        .filter(
+          client => client.mac && parseMac(client.mac).includes(parseMac(mac)),
+        )
+        .filter((_, index) => index < 10);
     }
     return this.customers;
   }
