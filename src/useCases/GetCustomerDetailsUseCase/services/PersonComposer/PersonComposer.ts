@@ -17,7 +17,6 @@ export default class PersonComposer implements IPersonComposer {
       observacao,
       rem_obs,
     } = data;
-
     const url =
       company === process.env.SERVER_1_NAME
         ? process.env.SERVER_1_URL

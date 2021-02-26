@@ -32,6 +32,7 @@ export default class GetCustomerUseCase {
     const invoiceResponse = await api(company).get(`invoice/list/${login}`);
 
     const customerData = customerResponse.data.dados[0];
+    Object.assign(customerData, { company });
 
     const invoices =
       invoiceResponse.data === 'NULL'
