@@ -1,6 +1,4 @@
-import Customer from '../../entities/Customer';
-
-interface Invoice {
+interface IInvoice {
   uuid_lanc: string;
   nome: string;
   datavenc: string;
@@ -20,7 +18,4 @@ interface Invoice {
   deltitulo: string;
 }
 
-export default interface GetCustomerDTO {
-  customer: Customer[];
-  invoices: Invoice[];
-}
+export default IInvoice;
