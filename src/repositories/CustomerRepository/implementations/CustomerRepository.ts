@@ -1,6 +1,7 @@
 import Customer from '../../../entities/Customer';
 import ListCustomersDTO from '../../../useCases/ListCustomersUseCase/ListCustomersDTO';
 import { parseMac, parseString } from '../../../utils/stringParser';
+import { isLogin, isMac } from '../../../utils/typeCheck';
 import ICustomerRepository from '../ICustomerRepository';
 
 export default class CustomerRepository implements ICustomerRepository {
@@ -11,29 +12,25 @@ export default class CustomerRepository implements ICustomerRepository {
   }
 
   list(data: ListCustomersDTO): Customer[] {
-    const { login, nome, mac } = data.query;
-
-    if (login) {
-      return this.customers
+    const { payload } = data.query;
+    const payloadType = isLogin(payload) ? 'login' : isMac(payload) ? 'mac' : 'nome';
+    switch(payloadType) {
+      case 'login':
+        return this.customers
         .filter(client =>
-          parseString(client.login).includes(parseString(login)),
+          parseString(client.login).includes(parseString(payload).slice(1)),
         )
         .filter((_, index) => index < 10);
-    }
-
-    if (nome) {
-      return this.customers
-        .filter(client => parseString(client.nome).includes(parseString(nome)))
-        .filter((_, index) => index < 10);
-    }
-
-    if (mac) {
-      return this.customers
+      case 'mac':
+        return this.customers
         .filter(
-          client => client.mac && parseMac(client.mac).includes(parseMac(mac)),
+          client => client.mac && parseMac(client.mac).includes(parseMac(payload)),
         )
         .filter((_, index) => index < 10);
+      default:
+        return this.customers
+        .filter(client => parseString(client.nome).includes(parseString(payload)))
+        .filter((_, index) => index < 10);
     }
-    return this.customers;
   }
 }
